@@ -1,0 +1,24 @@
+<h1>メモ編集</h1>
+
+<form action="/memos/<%= @memo_id %>" method="post" style="display: inline; margin: 0;">
+  <input type="hidden" name="_method" value="patch">
+
+  <p>
+    タイトル：<br>
+    <input type="text" name="title" value="<%= @memo['title'] %>" autocomplete="off">
+  </p>
+  <% if @error %>
+    <p style="color: red; margin: -10px 0 10px; font-size: 12px;"><%= @error %></p>
+  <% end %>
+
+  <p>
+    内容：<br>
+    <textarea name="content"><%= @memo['content'] %></textarea>
+  </p>
+
+  <button type="submit">更新</button>
+</form>
+
+<form action="/memos/<%= @memo_id %>" method="get" style="display: inline; margin: 0;">
+  <button type="submit">戻る</button>
+</form>

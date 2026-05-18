@@ -1,0 +1,13 @@
+<h1>メモアプリ</h1>
+
+<ul>
+  <% @memos.each do |id, memo| %>
+    <li>
+      <a href="/memos/<%= id %>"><%= memo["title"] %></a>
+    </li>
+  <% end %>
+</ul>
+
+<form action="/memos/new" method="get" style="display: inline; margin: 0;">
+  <button type="submit">追加</button>
+</form>

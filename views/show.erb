@@ -1,0 +1,17 @@
+<h1>メモアプリ</h1>
+
+<h2><%= @memo['title'] %></h2>
+<p><%= @memo['content'].gsub("\n", "<br>") %></p>
+
+<form action="/memos/<%= @memo_id %>/edit" method="get" style="display: inline; margin: 0;">
+  <button type="submit">編集</button>
+</form>
+
+<form action="/memos/<%= @memo_id %>" method="post" style="display: inline;" onsubmit="return confirm('削除しますか？');">
+  <input type="hidden" name="_method" value="delete">
+  <button type="submit">削除</button>
+</form>
+
+<form action="/memos" method="get" style="display: inline; margin: 0;">
+  <button type="submit">戻る</button>
+</form>
