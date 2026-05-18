@@ -4,6 +4,7 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'json'
+require 'rack/utils'
 
 enable :method_override
 
@@ -16,6 +17,12 @@ end
 def save_memos(memos)
   File.open('memos.json', 'w') do |f|
     f.write(JSON.pretty_generate(memos))
+  end
+end
+
+helpers do
+  def esc(text)
+    Rack::Utils.escape_html(text.to_s)
   end
 end
 

@@ -1,7 +1,7 @@
 <h1>メモアプリ</h1>
 
-<h2><%= @memo['title'] %></h2>
-<p><%= @memo['content'].gsub("\n", "<br>") %></p>
+<h2><%= esc(@memo['title']) %></h2>
+<p><%= esc(@memo['content']).gsub("\n", '<br>') %></p>
 
 <form action="/memos/<%= @memo_id %>/edit" method="get" style="display: inline; margin: 0;">
   <button type="submit">編集</button>

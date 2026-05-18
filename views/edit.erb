@@ -5,7 +5,7 @@
 
   <p>
     タイトル：<br>
-    <input type="text" name="title" value="<%= @memo['title'] %>" autocomplete="off">
+    <input type="text" name="title" value="<%= esc(@memo['title']) %>" autocomplete="off">
   </p>
   <% if @error %>
     <p style="color: red; margin: -10px 0 10px; font-size: 12px;"><%= @error %></p>
@@ -13,7 +13,7 @@
 
   <p>
     内容：<br>
-    <textarea name="content"><%= @memo['content'] %></textarea>
+    <textarea name="content"><%= esc(@memo['content']) %></textarea>
   </p>
 
   <button type="submit">更新</button>
