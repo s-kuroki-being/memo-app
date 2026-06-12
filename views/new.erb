@@ -1,14 +1,7 @@
-<h1>新規メモ作成</h1>
+<h1>メモアプリ</h1>
 
 <form action="/memos" method="post">
-  <p>タイトル：<br><input type="text" name="title" autocomplete="off"></p>
-  <% if @error %>
-    <p style="color: red; margin: -10px 0 10px; font-size: 12px;"><%= @error %></p>
-  <% end %>
-  <p>内容：<br><textarea name="content"></textarea></p>
+  <p><input type="text" name="title" autocomplete="off"></p>
+  <div><textarea name="content"></textarea></div>
   <button type="submit">保存</button>
-</form>
-
-<form action="/memos" method="get" style="display: inline; margin: 0;">
-  <button type="submit">戻る</button>
 </form>

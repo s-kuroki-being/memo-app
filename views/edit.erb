@@ -1,24 +1,16 @@
-<h1>メモ編集</h1>
+<h1>メモアプリ</h1>
 
-<form action="/memos/<%= @memo_id %>" method="post" style="display: inline; margin: 0;">
+<form action="/memos/<%= @memo['id'] %>" method="post">
   <input type="hidden" name="_method" value="patch">
 
   <p>
-    タイトル：<br>
     <input type="text" name="title" value="<%= esc(@memo['title']) %>" autocomplete="off">
   </p>
-  <% if @error %>
-    <p style="color: red; margin: -10px 0 10px; font-size: 12px;"><%= @error %></p>
-  <% end %>
 
-  <p>
-    内容：<br>
+  <div>
     <textarea name="content"><%= esc(@memo['content']) %></textarea>
-  </p>
+  </div>
 
-  <button type="submit">更新</button>
-</form>
-
-<form action="/memos/<%= @memo_id %>" method="get" style="display: inline; margin: 0;">
-  <button type="submit">戻る</button>
+  <button type="submit">変更</button>
+  <a></a>
 </form>
