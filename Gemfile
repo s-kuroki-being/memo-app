@@ -9,4 +9,3 @@ gem 'rubocop-fjord'
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'webrick'
-# gem "rails"

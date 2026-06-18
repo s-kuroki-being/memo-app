@@ -3,11 +3,9 @@
 <h2><%= esc(@memo['title']) %></h2>
 <p><%= esc(@memo['content']).gsub("\n", '<br>') %></p>
 
-<form action="/memos/<%= @memo['id'] %>/edit" method="get" style="display: inline; margin: 0;">
-  <button type="submit">変更</button>
-</form>
+<a href="/memos/<%= @memo['id'] %>/edit">変更</a>
 
-<form action="/memos/<%= @memo['id'] %>" method="post" style="display: inline;" onsubmit="return confirm('削除しますか？');">
+<form action="/memos/<%= @memo['id'] %>" method="post" onsubmit="return confirm('削除しますか？');">
   <input type="hidden" name="_method" value="delete">
   <button type="submit">削除</button>
 </form>

@@ -24,7 +24,7 @@ helpers do
   end
 end
 
-# メモアプリ作成
+# 一覧画面
 get '/memos' do
   @title = 'メモアプリ'
   @memos = load_memos
@@ -54,7 +54,7 @@ get '/memos/:id/edit' do
   erb :edit
 end
 
-# 保存処理
+# 新規メモ作成
 post '/memos' do
   title = params[:title]&.strip
   content = params[:content]&.strip
@@ -69,17 +69,18 @@ post '/memos' do
   redirect '/memos'
 end
 
-# メモ変更
+# 既存のメモを更新
 patch '/memos/:id' do
   memos = load_memos
   memo = memos[params[:id]]
   halt 404, 'Memo not found' if memo.nil?
 
   title = params[:title]&.strip
+  content = params[:content]&.strip
 
   memo['id'] = params[:id]
   memo['title'] = title
-  memo['content'] = params[:content]&.strip
+  memo['content'] = content
   save_memos(memos)
 
   redirect '/memos'
