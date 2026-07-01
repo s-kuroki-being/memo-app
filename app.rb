@@ -12,6 +12,13 @@ def load_memos
   JSON.parse(File.read('memos.json'))
 end
 
+helpers do
+  def find_memo(id)
+    memos = load_memos
+    memos[id]
+  end
+end
+
 def save_memos(memos)
   File.open('memos.json', 'w') do |f|
     f.write(memos.to_json)
@@ -38,8 +45,7 @@ end
 
 # 詳細画面
 get '/memos/:id' do
-  memos = load_memos
-  @memo = memos[params[:id]]
+  @memo = find_memo(params[:id])
   halt 404, 'Memo not found' if @memo.nil?
 
   erb :show
@@ -47,8 +53,7 @@ end
 
 # 編集画面
 get '/memos/:id/edit' do
-  memos = load_memos
-  @memo = memos[params[:id]]
+  @memo = find_memo(params[:id])
   halt 404, 'Memo not found' if @memo.nil?
 
   erb :edit
@@ -75,7 +80,6 @@ patch '/memos/:id' do
   memo = memos[params[:id]]
   halt 404, 'Memo not found' if memo.nil?
 
-  memo['id'] = params[:id]
   memo['title'] = params[:title]&.strip
   memo['content'] = params[:content]&.strip
   save_memos(memos)
