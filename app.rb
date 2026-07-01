@@ -75,12 +75,9 @@ patch '/memos/:id' do
   memo = memos[params[:id]]
   halt 404, 'Memo not found' if memo.nil?
 
-  title = params[:title]&.strip
-  content = params[:content]&.strip
-
   memo['id'] = params[:id]
-  memo['title'] = title
-  memo['content'] = content
+  memo['title'] = params[:title]&.strip
+  memo['content'] = params[:content]&.strip
   save_memos(memos)
 
   redirect '/memos'
