@@ -2,26 +2,43 @@
 
 require 'sinatra'
 require 'sinatra/reloader' if development?
-require 'json'
+require 'sqlite3'
 require 'rack/utils'
 require 'securerandom'
 
 enable :method_override
 
+DB = SQLite3::Database.new('memos.db')
+DB.results_as_hash = true
+
+DB.execute <<~SQL
+  CREATE TABLE IF NOT EXISTS memos (
+    id TEXT PRIMARY KEY,
+    title TEXT,
+    content TEXT,
+    created_at TEXT NOT NULL DEFAULT (datetime('now'))
+  )
+SQL
+
+def row_to_memo(row)
+  {
+    'id' => row['id'],
+    'title' => row['title'],
+    'content' => row['content']
+  }
+end
+
 def load_memos
-  JSON.parse(File.read('memos.json'))
+  rows = DB.execute('SELECT id, title, content FROM memos ORDER BY created_at DESC')
+  rows.each_with_object({}) do |row, memos|
+    memos[row['id']] = row_to_memo(row)
+  end
 end
 
 helpers do
   def find_memo(id)
-    memos = load_memos
-    memos[id]
-  end
-end
-
-def save_memos(memos)
-  File.open('memos.json', 'w') do |f|
-    f.write(memos.to_json)
+    row = DB.get_first_row('SELECT id, title, content FROM memos WHERE id = ?', [id])
+    row && row_to_memo(row)
   end
 end
 
@@ -65,33 +82,27 @@ post '/memos' do
   content = params[:content]&.strip
 
   id = SecureRandom.uuid
-  memos = load_memos
-
-  memos[id] = { 'id' => id, 'title' => title, 'content' => content }
-
-  save_memos(memos)
+  DB.execute('INSERT INTO memos (id, title, content) VALUES (?, ?, ?)', [id, title, content])
 
   redirect '/memos'
 end
 
 # 既存のメモを更新
 patch '/memos/:id' do
-  memos = load_memos
-  memo = memos[params[:id]]
+  memo = find_memo(params[:id])
   halt 404, 'Memo not found' if memo.nil?
 
-  memo['title'] = params[:title]&.strip
-  memo['content'] = params[:content]&.strip
-  save_memos(memos)
+  DB.execute(
+    'UPDATE memos SET title = ?, content = ? WHERE id = ?',
+    [params[:title]&.strip, params[:content]&.strip, params[:id]]
+  )
 
   redirect '/memos'
 end
 
 # メモ削除
 delete '/memos/:id' do
-  memos = load_memos
-  memos.delete(params[:id])
-  save_memos(memos)
+  DB.execute('DELETE FROM memos WHERE id = ?', [params[:id]])
 
   redirect '/memos'
 end
