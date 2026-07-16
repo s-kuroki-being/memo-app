@@ -1,0 +1,15 @@
+<h1>メモアプリ</h1>
+
+<form action="/memos/<%= @memo['id'] %>" method="post">
+  <input type="hidden" name="_method" value="patch">
+
+  <p>
+    <input type="text" name="title" value="<%= esc(@memo['title']) %>" autocomplete="off">
+  </p>
+
+  <div>
+    <textarea name="content"><%= esc(@memo['content']) %></textarea>
+  </div>
+
+  <button type="submit">変更</button>
+</form>

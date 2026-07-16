@@ -1,0 +1,11 @@
+<h1>メモアプリ</h1>
+
+<h2><%= esc(@memo['title']) %></h2>
+<p><%= esc(@memo['content']).gsub("\n", '<br>') %></p>
+
+<a href="/memos/<%= @memo['id'] %>/edit">変更</a>
+
+<form action="/memos/<%= @memo['id'] %>" method="post" onsubmit="return confirm('削除しますか？');">
+  <input type="hidden" name="_method" value="delete">
+  <button type="submit">削除</button>
+</form>

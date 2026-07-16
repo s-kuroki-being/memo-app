@@ -1,0 +1,11 @@
+<h1>メモアプリ</h1>
+
+<ul>
+  <% @memos.each do |id, memo| %>
+    <li>
+      <a href="/memos/<%= id %>"><%= esc(memo['title']) %></a>
+    </li>
+  <% end %>
+</ul>
+
+<a href="/memos/new">追加</a>
